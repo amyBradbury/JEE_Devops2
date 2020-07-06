@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : 6 juil. 2020, 19:01:01
+    Document   : menu
+    Created on : 4 juil. 2020, 20:12:39
     Author     : Alec-PC
 --%>
 
@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <p>Bievenue sur la page d'accueil</p><a href="/JEEProject/menu.htm">Poursuivre</a>
+        <h1>Bienvenue dans le menu</h1>
+        <h2><%=session.getAttribute("login")%></h2>
     </body>
 </html>
