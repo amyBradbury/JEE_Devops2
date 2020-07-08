@@ -4,7 +4,7 @@
     Author     : Alec-PC
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Bienvenue dans le menu</h1>
-        <h2><%=session.getAttribute("login")%></h2>
+        
+        <%@ include file="footer.jsp"%>  
     </body>
 </html>
