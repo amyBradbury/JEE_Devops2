@@ -9,11 +9,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Menu de sélection</title>
     </head>
     <body>
-        <h1>Bienvenue dans le menu</h1>
-        
+        <h1>Sélectionner une opération à éxécuter :</h1>
+         <form name="form" action="Controleur" method="POST">
+        <select name="Operation">
+            <option>Récupération des achats d'un client</option>
+            <option>Gestion des ventes</option>
+            <option>Gestion des stocks</option>
+            <option>Gestion des référence produit</option>
+            <option>Gestion des clients</option>
+        </select>
+        <input type="submit" value="Valider" name="validation" />$
+        </form>
         <%@ include file="footer.jsp"%>  
     </body>
 </html>
