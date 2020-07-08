@@ -17,12 +17,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author Alec-PC
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout.htm"})
 public class LogoutServlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
 
         // Destroys the session for this user.
         if (session != null) {
@@ -30,6 +30,6 @@ public class LogoutServlet extends HttpServlet {
         }
 
         // Redirects back to the initial page.
-        response.sendRedirect(request.getContextPath());
+        req.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(req, resp);
     }
 }

@@ -18,7 +18,7 @@ import modele.User;
  *
  * @author Alec-PC
  */
-@WebServlet(name = "menu", urlPatterns = {"/menu.htm"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/menu.htm"})
 public class LoginServlet extends HttpServlet {
 
     @Override
