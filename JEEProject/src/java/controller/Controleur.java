@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.*;
+import beans.*;
 
 /**
  *
@@ -75,16 +76,16 @@ public class Controleur extends HttpServlet {
             throws ServletException, IOException {
         switch(request.getParameter("Operation")){
             case "Gestion des clients" :
-                //try{
+                try{
                 requeteur=new AppDao();
-                //resultatrequete a = new resultatrequete();
-                //a.setResult(requeteur.GetCustomers());
-                //request.setAttribute("resultat",a);//déclaration de mon javabean dans mes paramètres POST
-                //request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                //}
-                /*catch (SQLException e){
+                resultrequete bean = new resultrequete();
+                bean.setResult(requeteur.GetCustomers());
+                request.setAttribute("resultat",bean);//déclaration de mon javabean dans mes paramètres POST
+                request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }
+                catch (SQLException e){
                     e.printStackTrace();
-                }*/
+                }
             break;
             
         }           
