@@ -87,6 +87,54 @@ public class Controleur extends HttpServlet {
                     e.printStackTrace();
                 }
             break;
+                case "Gestion des référence produit" :
+                try{
+                requeteur=new AppDao();
+                resultrequete bean = new resultrequete();
+                bean.setResult(requeteur.GetCustomers());
+                request.setAttribute("resultat",bean);//déclaration de mon javabean dans mes paramètres POST
+                request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            break;
+            case "Gestion des stocks" :
+                try{
+                requeteur=new AppDao();
+                resultrequete bean = new resultrequete();
+                bean.setResult(requeteur.GetCustomers());
+                request.setAttribute("resultat",bean);//déclaration de mon javabean dans mes paramètres POST
+                request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            break;
+               case "Gestion des ventes" :
+                try{
+                requeteur=new AppDao();
+                resultrequete bean = new resultrequete();
+                bean.setResult(requeteur.GetCustomers());
+                request.setAttribute("resultat",bean);//déclaration de mon javabean dans mes paramètres POST
+                request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            break;
+            case "Récupération des achats d'un client" :
+                try{
+                requeteur=new AppDao();
+                resultrequete bean = new resultrequete();
+                bean.setResult(requeteur.GetCustomers());
+                request.setAttribute("resultat",bean);//déclaration de mon javabean dans mes paramètres POST
+                request.getRequestDispatcher("resultat.jsp").forward(request,response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            break;
             
         }           
     }

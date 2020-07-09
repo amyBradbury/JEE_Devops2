@@ -131,5 +131,29 @@ public class AppDao {
         }
         return resultat;
     }
+    public List<PurchaseOrder> GetProductsOfCustomer(int id)
+    {
+        List resultat=null;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Query requete = _session.createQuery("SELECT * FROM PURCHAS_ORDER as achats JOIN achats.customer a  WHERE a.customerId =:_id");
+            requete.setInteger("_id", id);
+            resultat =(List<PurchaseOrder>) requete.list();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return resultat;
+    }
     
 }
