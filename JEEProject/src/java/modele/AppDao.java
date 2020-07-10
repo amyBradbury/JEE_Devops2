@@ -5,6 +5,7 @@
  */
 package modele;
 import Utils.HibernateSession;
+import java.math.BigDecimal;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import java.util.*;
@@ -155,5 +156,114 @@ public class AppDao {
         }
         return resultat;
     }
+    public boolean UpdateClient(String name,char discountCode,String addressLine1,String addressLine2,String city, String zip,String phone,String state,String email,String fax, int creditLimit,int id)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Customer customer = new Customer(id,discountCode,zip, name, addressLine1, addressLine2,city,state, phone, fax, email, creditLimit);
+            _session.update(customer);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    public boolean UpdateProduct(int productId, int manufacturerId, String productCode, BigDecimal purchaseCost, Integer quantityOnHand, BigDecimal markup, String available, String description)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Product product = new Product( productId,  manufacturerId,  productCode,  purchaseCost,  quantityOnHand,  markup,  available,  description);
+            _session.update(product);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    public boolean UpdatePurchaseOrder(int orderNum, int customerId, int productId, Short quantity, BigDecimal shippingCost, java.util.Date salesDate, java.util.Date shippingDate, String freightCompany)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            PurchaseOrder purchaseOrder = new PurchaseOrder( orderNum,  customerId,  productId,  quantity,  shippingCost,  salesDate,  shippingDate,  freightCompany);
+            _session.update(purchaseOrder);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+     public boolean UpdateProductCode(String prodCode, char discountCode, String description)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            ProductCode productCode = new ProductCode( prodCode,  discountCode,  description);
+            _session.update(productCode);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    
+    
     
 }
