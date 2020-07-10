@@ -74,6 +74,8 @@ public class Controleur extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         switch(request.getParameter("Operation")){
             case "Gestion des clients" :
                 try{
