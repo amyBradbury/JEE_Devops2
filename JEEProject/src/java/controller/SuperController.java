@@ -25,28 +25,28 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  *
  * @author Alec-PC
  */
-
 @Controller
 public class SuperController {
 
-    
     @RequestMapping("/resultat.htm")
     public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) {
-        
-        System.out.println("prout");
-        
+
         AppDao requeteur;
         String erreur;
-
+        
+        if(request.getParameter("Operation") != null){
         switch (request.getParameter("Operation")) {
             case "Gestion des clients":
                 try {
                     requeteur = new AppDao();
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
+
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
+                    System.out.println("bean : " + bean);
                     try {
-                        request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+
+                        request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
                     } catch (ServletException ex) {
                         Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -55,6 +55,7 @@ public class SuperController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
                 break;
             case "Gestion des référence produit":
                 try {
@@ -79,13 +80,13 @@ public class SuperController {
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-            try {
-                request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-            } catch (ServletException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    try {
+                        request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                    } catch (ServletException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -96,13 +97,13 @@ public class SuperController {
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-            try {
-                request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-            } catch (ServletException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    try {
+                        request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                    } catch (ServletException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -113,19 +114,58 @@ public class SuperController {
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-            try {
-                request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-            } catch (ServletException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    try {
+                        request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                    } catch (ServletException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 break;
+            case "-":
+                System.out.println("prout prout");
+                String param1 = request.getParameter("idValue");
+                System.out.println("param : " + param1);
+                requeteur = new AppDao();
+                resultrequete bean = new resultrequete();
+                requeteur.DeleteCustomer(param1);
+                request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
 
+                try {
+                    request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                } catch (ServletException ex) {
+                    Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
-        return null;
+        }
+        return new ModelAndView("resultat.jsp");
+    }
+
+    @RequestMapping("/deletedCustomer.htm")
+    public ModelAndView deletedCustomer(HttpServletRequest request, HttpServletResponse response) {
+
+        AppDao requeteur;
+        String erreur;
+        String param1 = request.getParameter("Id");
+        System.out.println("param : " + param1);
+        requeteur = new AppDao();
+        resultrequete bean = new resultrequete();
+        requeteur.DeleteCustomer(param1);
+        //request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
+
+        try {
+            response.sendRedirect("resultat.htm?Operation=Gestion des clients");
+            //request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+        } catch (IOException ex) {
+            Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new ModelAndView("/WEB-INF/jsp/resultat.jsp");
     }
 }

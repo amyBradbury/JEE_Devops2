@@ -6,9 +6,7 @@
 package modele;
 import Utils.HibernateSession;
 import org.hibernate.*;
-import org.hibernate.cfg.Configuration;
 import java.util.*;
-import java.sql.*;
 /**
  *
  * @author jorda
@@ -28,9 +26,8 @@ public class AppDao {
         try
         {
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
-            _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM CUSTOMER");
+            _session.flush(); //Vider la session
+            Query requete = _session.createQuery("from Customer");
             resultat = requete.list();
             for(Object item : requete.list())
             {
@@ -144,6 +141,34 @@ public class AppDao {
             Query requete = _session.createQuery("SELECT * FROM PURCHAS_ORDER as achats JOIN achats.customer a  WHERE a.customerId =:_id");
             requete.setInteger("_id", id);
             resultat =(List<PurchaseOrder>) requete.list();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return resultat;
+    }
+    
+     public List DeleteCustomer(String idToDelete)
+    {
+        List resultat=null;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Query requete = _session.createQuery("delete PurchaseOrder where customer_id="+idToDelete);
+            requete.executeUpdate();    
+            requete = _session.createQuery("delete Customer where customer_id="+idToDelete);
+            requete.executeUpdate();
+//            resultat = requete.list();
+            
         }
         catch(Exception e)
         {
