@@ -28,30 +28,22 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 @Controller
 public class SuperController {
 
-    @RequestMapping("/resultat.htm")
-    public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) {
-
         AppDao requeteur;
         String erreur;
         
-        if(request.getParameter("Operation") != null){
+    @RequestMapping("/resultat.htm")
+    public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) {
+        
         switch (request.getParameter("Operation")) {
             case "Gestion des clients":
                 try {
                     requeteur = new AppDao();
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
-
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-                    System.out.println("bean : " + bean);
-                    try {
-
-                        request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                    } catch (ServletException ex) {
-                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    
+                    return new ModelAndView("resultat");
+                    //request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -125,47 +117,25 @@ public class SuperController {
                     e.printStackTrace();
                 }
                 break;
-            case "-":
-                System.out.println("prout prout");
-                String param1 = request.getParameter("idValue");
-                System.out.println("param : " + param1);
-                requeteur = new AppDao();
-                resultrequete bean = new resultrequete();
-                requeteur.DeleteCustomer(param1);
-                request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-
-                try {
-                    request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                } catch (ServletException ex) {
-                    Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+            
         }
-        }
-        return new ModelAndView("resultat.jsp");
+        return null;
     }
 
-    @RequestMapping("/deletedCustomer.htm")
-    public ModelAndView deletedCustomer(HttpServletRequest request, HttpServletResponse response) {
-
-        AppDao requeteur;
-        String erreur;
-        String param1 = request.getParameter("Id");
-        System.out.println("param : " + param1);
-        requeteur = new AppDao();
-        resultrequete bean = new resultrequete();
-        requeteur.DeleteCustomer(param1);
-        //request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
+    @RequestMapping("/confirm.htm")
+    public ModelAndView confirm(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            response.sendRedirect("resultat.htm?Operation=Gestion des clients");
-            //request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-        } catch (IOException ex) {
-            Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            
+            requeteur = new AppDao();
+            String param1 = request.getParameter("Id");
+            requeteur.DeleteCustomer(Integer.parseInt(param1));
 
-        return new ModelAndView("/WEB-INF/jsp/resultat.jsp");
+        } catch (Exception e) {
+            request.setAttribute("erreur", "erreur requete " + e);
+            return new ModelAndView("error");
+        }
+        request.setAttribute("confirm", "Suppression effectuée");//message de confirmation de suppression envoyé à la jsp
+        return new ModelAndView("confirm");
     }
 }

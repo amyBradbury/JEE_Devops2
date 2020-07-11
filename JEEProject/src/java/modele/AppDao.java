@@ -6,43 +6,38 @@
 package modele;
 import Utils.HibernateSession;
 import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
 import java.util.*;
-/**
+import java.sql.*;
+/*
  *
  * @author jorda
  */
 public class AppDao {
     
-    private Session _session = null;
+    Session _session = null;
     
     public AppDao(){
      this._session = HibernateSession.GetSession().openSession();
     }
     public List GetCustomers()
     {
-        List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
+        List resultat= null;
+        List customerResult = new ArrayList<Customer>();
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
-            _session.flush(); //Vider la session
-            Query requete = _session.createQuery("from Customer");
-            resultat = requete.list();
-            for(Object item : requete.list())
-            {
-                resultat.add((Customer) item);
-            }
+            _session.flush();
+                Query q=_session.createQuery("from Customer");
+           resultat=q.list();
+           for(Object o :q.list())customerResult.add((Customer)o);
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        catch (Exception e) {
+        e.printStackTrace();
         }
-        finally
-        {
-            if(_session.isOpen()) _session.close();
+       finally{
+          if (_session.isOpen())_session.close();
         }
-        return resultat;
+    return resultat;
     }
     
      public List GetPurchaseOrders()
@@ -153,32 +148,30 @@ public class AppDao {
         return resultat;
     }
     
-     public List DeleteCustomer(String idToDelete)
+     public Customer DeleteCustomer(int id)
     {
-        List resultat=null;
-        Transaction transact =null;
+        Customer client=null;
         
-        try
-        {
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("delete PurchaseOrder where customer_id="+idToDelete);
-            requete.executeUpdate();    
-            requete = _session.createQuery("delete Customer where customer_id="+idToDelete);
-            requete.executeUpdate();
-//            resultat = requete.list();
             
+            client = (Customer) _session.load(Customer.class, id);
+            System.out.println("client :"+client.getName());
+            _session.delete(client);
+           
+      }
+       catch (Exception e) {
+        
+        e.printStackTrace();
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+       finally{
+          if (_session.isOpen())_session.close();
         }
-        finally
-        {
-            if(_session.isOpen()) _session.close();
-        }
-        return resultat;
+      
+    return client;
     }
+     
+     
     
 }

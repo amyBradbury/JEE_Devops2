@@ -12,7 +12,7 @@
         <title>Menu de sélection</title>
     </head>
     <body>
-        <h1>Sélectionner une opération à éxécuter :</h1>
+        <h1>Sélectionner une opération à exécuter :</h1>
          <form name="form" action="resultat.htm" method="POST">
          <select name="Operation">
             <option>Récupération des achats d'un client</option>
