@@ -5,6 +5,7 @@
  */
 package controller;
 
+import beans.resultatRequeteProduit;
 import beans.resultrequete;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ public class SuperController {
         String erreur;
         
     @RequestMapping("/resultat.htm")
-    public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         switch (request.getParameter("Operation")) {
             case "Gestion des clients":
@@ -41,9 +42,9 @@ public class SuperController {
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-                    
+                    request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);
                     return new ModelAndView("resultat");
-                    //request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                    ////renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -69,17 +70,13 @@ public class SuperController {
             case "Gestion des stocks":
                 try {
                     requeteur = new AppDao();
-                    resultrequete bean = new resultrequete();
-                    bean.setResult(requeteur.GetCustomers());
-                    request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-                    try {
-                        request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                    } catch (ServletException ex) {
-                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(SuperController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } catch (SQLException e) {
+                    resultatRequeteProduit bean = new resultatRequeteProduit();
+                    bean.setResult(requeteur.GetProducts());
+                    request.setAttribute("resultatProduit", bean);//déclaration de mon javabean dans mes paramètres POST
+                    ModelAndView metv = new ModelAndView("resultatProduit");
+                    return metv;
+                    //renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                }catch (SQLException e) {
                     e.printStackTrace();
                 }
                 break;
