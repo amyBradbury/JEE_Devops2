@@ -25,5 +25,5 @@ Controller :
   - Testé avec le cas de la gestion des client et la gestions des stocks.
   
 On a testé une alternative : SuperControler 
-  - Il ne fonctionne que pour rediriger vers resultat.jsp donc dansnotre projet pour la gestions des clients. Ce qui ne permet pas de rediriger sur toutes les options du menu.
+  - Il ne fonctionne que pour rediriger vers resultat.jsp donc dans notre projet pour la gestions des clients. Ce qui ne permet pas de rediriger sur toutes les options du menu.
   
