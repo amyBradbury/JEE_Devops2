@@ -30,6 +30,6 @@ public class LogoutServlet extends HttpServlet {
         }
 
         // Redirects back to the initial page.
-        req.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(req, resp);
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 }

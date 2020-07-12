@@ -9,43 +9,35 @@ import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import java.util.*;
 import java.sql.*;
-/**
+/*
  *
  * @author jorda
  */
 public class AppDao {
     
-    private Session _session = null;
+    Session _session = null;
     
     public AppDao(){
      this._session = HibernateSession.GetSession().openSession();
     }
     public List GetCustomers()
     {
-        List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
+        List resultat= null;
+        List customerResult = new ArrayList<Customer>();
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM CUSTOMER");
-            resultat = requete.list();
-            for(Object item : requete.list())
-            {
-                resultat.add((Customer) item);
-            }
+                Query q=_session.createQuery("from Customer");
+           resultat=q.list();
+           for(Object o :q.list())customerResult.add((Customer)o);
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        catch (Exception e) {
+        e.printStackTrace();
         }
-        finally
-        {
-            if(_session.isOpen()) _session.close();
+       finally{
+          if (_session.isOpen())_session.close();
         }
-        return resultat;
+    return resultat;
     }
     
      public List GetPurchaseOrders()
@@ -155,5 +147,31 @@ public class AppDao {
         }
         return resultat;
     }
+    
+     public Customer DeleteCustomer(int id)
+    {
+        Customer client=null;
+        
+        try{
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            
+            client = (Customer) _session.load(Customer.class, id);
+            System.out.println("client :"+client.getName());
+            _session.delete(client);
+           
+      }
+       catch (Exception e) {
+        
+        e.printStackTrace();
+        }
+       finally{
+          if (_session.isOpen())_session.close();
+        }
+      
+    return client;
+    }
+     
+     
     
 }
