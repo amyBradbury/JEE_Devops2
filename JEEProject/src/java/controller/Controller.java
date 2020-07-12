@@ -21,7 +21,7 @@ import javax.servlet.annotation.WebServlet;
  *
  * @author jorda
  */
-//@WebServlet(name = "Controller", urlPatterns = {"/resultat.htm"})
+@WebServlet(name = "Controller", urlPatterns = {"/resultat.htm"})
 public class Controller extends HttpServlet {
 
     AppDao requeteur;
@@ -88,11 +88,12 @@ public class Controller extends HttpServlet {
                     resultrequete bean = new resultrequete();
                     bean.setResult(requeteur.GetCustomers());
                     request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-                    request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+                    request.getRequestDispatcher("/WEB-INF/jsp/resultat.jsp").forward(request, response);
+                    ////renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                break;
+            break;
             case "Gestion des référence produit":
                 try {
                     requeteur = new AppDao();
@@ -105,15 +106,15 @@ public class Controller extends HttpServlet {
                 }
                 break;
             case "Gestion des stocks":
-                try {
-                    requeteur = new AppDao();
-                    resultrequete bean = new resultrequete();
-                    bean.setResult(requeteur.GetCustomers());
-                    request.setAttribute("resultat", bean);//déclaration de mon javabean dans mes paramètres POST
-                    request.getRequestDispatcher("resultat.jsp").forward(request, response);//renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        try {
+            requeteur = new AppDao();
+            resultatRequeteProduit bean = new resultatRequeteProduit();
+            bean.setResult(requeteur.GetProducts());
+            request.setAttribute("resultatProduit", bean);//déclaration de mon javabean dans mes paramètres POST*
+            //renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
                 break;
             case "Gestion des ventes":
                 try {
