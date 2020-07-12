@@ -41,21 +41,44 @@ public class AppDao {
     return resultat;
     }
     
-     public List GetPurchaseOrders()
+    public List GetProducts()
     {
         List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
+        List productResult = new ArrayList<Product>();
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PURCHASE_ORDER");
+            Query requete = _session.createQuery("FROM Product");
             resultat = requete.list();
             for(Object item : requete.list())
             {
-                resultat.add((PurchaseOrder) item);
+                productResult.add((Product) item);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return resultat;
+    }
+    
+     public List GetPurchaseOrders()
+    {
+        List resultat=null;
+        List PurchaseOrderResult = new ArrayList<Product>();
+        
+        try{
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            Query requete = _session.createQuery("FROM PurchaseOrder");
+            resultat = requete.list();
+            for(Object item : requete.list())
+            {
+                PurchaseOrderResult.add((PurchaseOrder) item);
             }
         }
         catch(Exception e)
@@ -72,18 +95,16 @@ public class AppDao {
      public List GetProductCodes()
     {
         List resultat=null;
-        Transaction transact =null;
+        List ProductCodeResult = new ArrayList<Product>();
         
-        try
-        {
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PRODUCT_CODE");
+            Query requete = _session.createQuery("FROM ProductCode");
             resultat = requete.list();
             for(Object item : requete.list())
             {
-                resultat.add((ProductCode) item);
+                ProductCodeResult.add((ProductCode) item);
             }
         }
         catch(Exception e)
@@ -97,33 +118,7 @@ public class AppDao {
         return resultat;
     }
      
-    public List GetProducts()
-    {
-        List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
-            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
-            _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PRODUCT");
-            resultat = requete.list();
-            for(Object item : requete.list())
-            {
-                resultat.add((Product) item);
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if(_session.isOpen()) _session.close();
-        }
-        return resultat;
-    }
+
     public List<PurchaseOrder> GetProductsOfCustomer(int id)
     {
         List resultat=null;
