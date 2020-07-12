@@ -5,6 +5,7 @@
  */
 package modele;
 import Utils.HibernateSession;
+import java.math.BigDecimal;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import java.util.*;
@@ -40,21 +41,44 @@ public class AppDao {
     return resultat;
     }
     
-     public List GetPurchaseOrders()
+    public List GetProducts()
     {
         List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
+        List productResult = new ArrayList<Product>();
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PURCHASE_ORDER");
+            Query requete = _session.createQuery("FROM Product");
             resultat = requete.list();
             for(Object item : requete.list())
             {
-                resultat.add((PurchaseOrder) item);
+                productResult.add((Product) item);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return resultat;
+    }
+    
+     public List GetPurchaseOrders()
+    {
+        List resultat=null;
+        List PurchaseOrderResult = new ArrayList<Product>();
+        
+        try{
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            Query requete = _session.createQuery("FROM PurchaseOrder");
+            resultat = requete.list();
+            for(Object item : requete.list())
+            {
+                PurchaseOrderResult.add((PurchaseOrder) item);
             }
         }
         catch(Exception e)
@@ -71,18 +95,16 @@ public class AppDao {
      public List GetProductCodes()
     {
         List resultat=null;
-        Transaction transact =null;
+        List ProductCodeResult = new ArrayList<Product>();
         
-        try
-        {
+        try{
             if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
             _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PRODUCT_CODE");
+            Query requete = _session.createQuery("FROM ProductCode");
             resultat = requete.list();
             for(Object item : requete.list())
             {
-                resultat.add((ProductCode) item);
+                ProductCodeResult.add((ProductCode) item);
             }
         }
         catch(Exception e)
@@ -96,33 +118,7 @@ public class AppDao {
         return resultat;
     }
      
-    public List GetProducts()
-    {
-        List resultat=null;
-        Transaction transact =null;
-        
-        try
-        {
-            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
-            _session.flush();
-            transact = _session.beginTransaction();
-            Query requete = _session.createQuery("SELECT * FROM PRODUCT");
-            resultat = requete.list();
-            for(Object item : requete.list())
-            {
-                resultat.add((Product) item);
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if(_session.isOpen()) _session.close();
-        }
-        return resultat;
-    }
+
     public List<PurchaseOrder> GetProductsOfCustomer(int id)
     {
         List resultat=null;
@@ -147,6 +143,115 @@ public class AppDao {
         }
         return resultat;
     }
+    public boolean UpdateClient(String name,char discountCode,String addressLine1,String addressLine2,String city, String zip,String phone,String state,String email,String fax, int creditLimit,int id)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Customer customer = new Customer(id,discountCode,zip, name, addressLine1, addressLine2,city,state, phone, fax, email, creditLimit);
+            _session.update(customer);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    public boolean UpdateProduct(int productId, int manufacturerId, String productCode, BigDecimal purchaseCost, Integer quantityOnHand, BigDecimal markup, String available, String description)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            Product product = new Product( productId,  manufacturerId,  productCode,  purchaseCost,  quantityOnHand,  markup,  available,  description);
+            _session.update(product);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    public boolean UpdatePurchaseOrder(int orderNum, int customerId, int productId, Short quantity, BigDecimal shippingCost, java.util.Date salesDate, java.util.Date shippingDate, String freightCompany)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            PurchaseOrder purchaseOrder = new PurchaseOrder( orderNum,  customerId,  productId,  quantity,  shippingCost,  salesDate,  shippingDate,  freightCompany);
+            _session.update(purchaseOrder);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+     public boolean UpdateProductCode(String prodCode, char discountCode, String description)
+    {
+        boolean isOk=false;
+        Transaction transact =null;
+        
+        try
+        {
+            if(!_session.isOpen())_session=HibernateSession.GetSession().openSession();
+            _session.flush();
+            transact = _session.beginTransaction();
+            ProductCode productCode = new ProductCode( prodCode,  discountCode,  description);
+            _session.update(productCode);
+            transact.commit();
+            isOk = true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            isOk = false;
+        }
+        finally
+        {
+            if(_session.isOpen()) _session.close();
+        }
+        return isOk;
+    }
+    
+    
+    
     
      public Customer DeleteCustomer(int id)
     {
