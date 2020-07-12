@@ -26,15 +26,14 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  *
  * @author Alec-PC
  */
-@Controller
+
 public class SuperController {
 
-        AppDao requeteur;
-        String erreur;
-        
-    @RequestMapping("/resultat.htm")
+    AppDao requeteur;
+    String erreur;
+
     public ModelAndView resultat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
         switch (request.getParameter("Operation")) {
             case "Gestion des clients":
                 try {
@@ -68,16 +67,11 @@ public class SuperController {
                 }
                 break;
             case "Gestion des stocks":
+                ModelAndView metv = null;
                 try {
-                    requeteur = new AppDao();
-                    resultatRequeteProduit bean = new resultatRequeteProduit();
-                    bean.setResult(requeteur.GetProducts());
-                    request.setAttribute("resultatProduit", bean);//déclaration de mon javabean dans mes paramètres POST
-                    ModelAndView metv = new ModelAndView("resultatProduit");
+                    metv = ResultatProduit(request, response);
                     return metv;
-                    //renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
-                }catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
                 }
                 break;
             case "Gestion des ventes":
@@ -114,7 +108,7 @@ public class SuperController {
                     e.printStackTrace();
                 }
                 break;
-            
+
         }
         return null;
     }
@@ -123,7 +117,7 @@ public class SuperController {
     public ModelAndView confirm(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            
+
             requeteur = new AppDao();
             String param1 = request.getParameter("Id");
             requeteur.DeleteCustomer(Integer.parseInt(param1));
@@ -134,5 +128,22 @@ public class SuperController {
         }
         request.setAttribute("confirm", "Suppression effectuée");//message de confirmation de suppression envoyé à la jsp
         return new ModelAndView("confirm");
+    }
+
+    @RequestMapping("/ResultatProduit.htm")
+    public ModelAndView ResultatProduit(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView metv = null;
+        try {
+            requeteur = new AppDao();
+            resultatRequeteProduit bean = new resultatRequeteProduit();
+            bean.setResult(requeteur.GetProducts());
+            request.setAttribute("resultatProduit", bean);//déclaration de mon javabean dans mes paramètres POST
+            metv = new ModelAndView("resultatProduit");
+
+            //renvoie mon résultat à la page resultat.jsp affichée par le navigateur client
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return metv;
     }
 }
