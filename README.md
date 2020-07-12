@@ -10,7 +10,7 @@ Projet pour le cours de JEE de la LP DevOps de L'IUT Lyon 1
 
 ## Liens
 
-- [Rapport (Google Doc)](https://docs.google.com/document/d/1MRo7LB9FsLiCyarbhvhFUemAV1ZnjI5N5Fg146zqVrE/edit?usp=sharing)
+- [Rapport (MS Word)](https://onedrive.live.com/view.aspx?resid=D7DE527E462E306C!37059&ithint=file%2cdocx&authkey=!ACSYtAXhBtKpMwg)
 
 - [Dépot Github](https://github.com/amyBradbury/JEE_Devops2)
 
